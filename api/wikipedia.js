@@ -2,6 +2,14 @@ const axios = require('axios');
 const { parse } = require('url');
 
 module.exports = async (req, res) => {
+  // CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 204;
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.end();
+  }
   try {
     const { query } = parse(req.url, true);
     const count = Math.min(Number(query.count) || 6, 10);
@@ -20,11 +28,13 @@ module.exports = async (req, res) => {
       });
     }
     res.statusCode = 200;
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(items));
   } catch (err) {
     console.error(err);
     res.statusCode = 500;
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Error al conectar con Wikipedia' }));
   }
