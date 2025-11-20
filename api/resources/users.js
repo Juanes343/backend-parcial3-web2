@@ -10,10 +10,16 @@ module.exports = async (req, res) => {
   }
   try {
     const response = await axios.get('https://randomuser.me/api/?results=10&inc=name,email,login');
+    const users = (response.data?.results || []).map((u, i) => ({
+      id: u.login?.uuid || String(i),
+      username: u.login?.username,
+      name: `${u.name?.first || ''} ${u.name?.last || ''}`.trim(),
+      email: u.email,
+    }));
     res.statusCode = 200;
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(response.data));
+    res.end(JSON.stringify(users));
   } catch (err) {
     res.statusCode = 500;
     res.setHeader('Access-Control-Allow-Origin', '*');
