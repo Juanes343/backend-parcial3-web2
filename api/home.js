@@ -18,7 +18,6 @@ module.exports = async (req, res) => {
         <li><code>/api/wikipedia?count=6</code></li>
         <li><code>/api/resources/photos</code></li>
         <li><code>/api/resources/countries</code></li>
-        <li><code>/api/resources/users</code></li>
       </ul>
     </body>
   </html>`);
