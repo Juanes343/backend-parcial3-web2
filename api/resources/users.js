@@ -12,11 +12,12 @@ module.exports = async (req, res) => {
     return res.end();
   }
   try {
-    const response = await axios.get('https://randomuser.me/api/?results=10&inc=name,email,login');
+    const response = await axios.get('https://randomuser.me/api/?results=10&inc=name,email,login,location');
     const users = (response.data?.results || []).map((u, i) => ({
       id: u.login?.uuid || String(i),
       username: u.login?.username,
       name: `${u.name?.first || ''} ${u.name?.last || ''}`.trim(),
+      city: u.location?.city,
       email: u.email,
     }));
     res.statusCode = 200;
